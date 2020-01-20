@@ -6,6 +6,6 @@ public enum  BookCategory {
     NOVEL,
     SCIENCE,
     TECHNOLOGY,
-    SPORTS,
+    SPORTS
 
 }

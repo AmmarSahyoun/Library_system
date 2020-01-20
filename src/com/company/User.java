@@ -1,8 +1,9 @@
 package com.company;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class User {
+public class User implements Serializable {
     private String userName;
     private String password;
     private ArrayList<BorrowedBook> myBorrowed;
@@ -11,7 +12,7 @@ public class User {
     public User(String userName, String password, boolean admin) {
         this.userName = userName;
         this.password = password;
-        this.myBorrowed = myBorrowed;
+        this.myBorrowed = new ArrayList();
         this.admin = admin;
     }
 
@@ -47,11 +48,33 @@ public class User {
         this.admin = admin;
     }
 
-    public BorrowedBook showMyBorrowed() {
+    public void showMyBorrowed() {
         for (BorrowedBook myBooks : myBorrowed) {
-            return myBooks;
+            System.out.println(myBooks.getBorrowedBook().getTitle());
         }
-        return null;
     }
 
+    @Override
+    public String toString() {
+        if (admin) {
+            return userName + " (Admin)";
+        }
+        else {
+            return userName;
+        }
+    }
+
+
+    public static ArrayList<User> seedData()
+    {
+        ArrayList<User> users = new ArrayList();
+
+        users.add(new User("John", "1234", true));
+        users.add(new User("Smith", "1234", false));
+        users.add(new User("Ali", "1234", false));
+        users.add(new User("Gasem", "1234", false));
+        users.add(new User("Mikool", "1234", false));
+
+        return users;
+    }
 }

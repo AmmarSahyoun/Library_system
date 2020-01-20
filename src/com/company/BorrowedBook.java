@@ -7,13 +7,13 @@ public class BorrowedBook {
     private Book borrowedBook ;
     private Date borrowedDate ;
     private Date returnDate ;
-    private int borrowDays ;
+    private int maxBorrowingDays ;
 
     public BorrowedBook(Book borrowedBook, Date borrowedDate, Date returnDate, int borrowDays) {
         this.borrowedBook = borrowedBook;
         this.borrowedDate = borrowedDate;
         this.returnDate = returnDate;
-        this.borrowDays = borrowDays;
+        this.maxBorrowingDays = borrowDays;
     }
     public Book getBorrowedBook() {
         return borrowedBook;
@@ -28,7 +28,7 @@ public class BorrowedBook {
     }
 
     public int getBorrowDays() {
-        return borrowDays;
+        return maxBorrowingDays;
     }
 
     public void setBorrowedBook(Book borrowedBook) {
@@ -44,7 +44,7 @@ public class BorrowedBook {
     }
 
     public void setBorrowDays(int borrowDays) {
-        this.borrowDays = borrowDays;
+        this.maxBorrowingDays = borrowDays;
     }
 
 

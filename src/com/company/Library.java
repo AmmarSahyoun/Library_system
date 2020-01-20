@@ -4,12 +4,40 @@ import java.util.ArrayList;
 
 public class Library {
 
-    private ArrayList<Book> books;
-    private ArrayList<User> users;
+    private User logedUser = null; // current user that will borrow books
+    private ArrayList<Book> books = new ArrayList<>();
+    private ArrayList<User> users = new ArrayList<>();
 
-    public Library(ArrayList<Book> books, ArrayList<User> users) {
-        this.books = books;
-        this.users = users;
+    public Library() {
+    }
+
+    public Library(ArrayList<Book> definedBooks, ArrayList<User> definedUsers) {
+        this.books = definedBooks;
+        this.users = definedUsers ;
+    }
+
+    public boolean Login(String Username, String Password)
+    {
+        boolean result = false;
+
+        for (User thisUser : users)
+        {
+            if (thisUser.getUserName().equalsIgnoreCase(Username)
+                    && thisUser.getPassword().equals(Password))
+            {
+                result = true;
+                logedUser = thisUser;
+                break;
+            }
+
+        }
+
+        return result;
+    }
+
+    public boolean isAdmin()
+    {
+        return logedUser.isAdmin();
     }
 
     public ArrayList<Book> getBooks() {
