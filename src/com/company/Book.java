@@ -2,6 +2,7 @@ package com.company;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Book implements Serializable {
     public BookCategory bookCategory;
@@ -9,6 +10,58 @@ public class Book implements Serializable {
     private String author;
     private String description;
     private boolean available;
+    private Date borrowedDate ;
+    private Date returnDate ;
+    private int maxBorrowingDays = 14;
+
+
+    public Book(BookCategory bookCategory, String title, String author, String description, boolean available, Date borrowedDate, Date returnDate, int maxBorrowingDays) {
+        this.bookCategory = bookCategory;
+        this.title = title;
+        this.author = author;
+        this.description = description;
+        this.available = available;
+        this.borrowedDate = borrowedDate;
+        this.returnDate = returnDate;
+        this.maxBorrowingDays = maxBorrowingDays;
+    }
+
+
+    public void setBorrowedDate(Date borrowedDate) {
+        this.borrowedDate = borrowedDate;
+    }
+
+    public void setReturnDate(Date returnDate) {
+        this.returnDate = returnDate;
+    }
+
+    public void setMaxBorrowingDays(int maxBorrowingDays) {
+        this.maxBorrowingDays = maxBorrowingDays;
+    }
+
+
+    public Date getBorrowedDate() {
+        return borrowedDate;
+    }
+
+    public Date getReturnDate() {
+        return returnDate;
+    }
+
+    public int getMaxBorrowingDays() {
+        return maxBorrowingDays;
+    }
+
+
+    @Override
+    public String toString() {
+        return  "\n=========================================" + "\nCategory: " + bookCategory +
+                "\nTitle: " + title +
+                "\nAuthor: " + author +
+                "\nDescription: " + description +
+                "\nAvailable: " + (available ? "Yes" : "No") + "\n==========================================";
+    }
+
 
     public Book(BookCategory bookCategory, String title, String author, String description, boolean available) {
         this.bookCategory = bookCategory;

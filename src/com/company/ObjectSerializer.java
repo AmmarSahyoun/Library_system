@@ -9,13 +9,12 @@ public class ObjectSerializer {
 
     private String fileName = null;
 
-    public ObjectSerializer(String fileName)
-    {
+    public ObjectSerializer(String fileName){
         this.fileName = fileName;
     }
 
     // Serialize
-    public boolean WriteObjectToFile(Object serObj) {
+    public boolean WriteObjectToFile(Object serObj) {  // why boolean ?
 
         try {
 
@@ -32,7 +31,7 @@ public class ObjectSerializer {
     }
 
     // Deserialize
-    public Object ReadObjectFromFile() {
+    public Object ReadObjectFromFile() {   // why and this type object
         Object scannedObj = null;
 
         try {

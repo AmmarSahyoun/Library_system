@@ -48,11 +48,11 @@ public class User implements Serializable {
         this.admin = admin;
     }
 
-    public void showMyBorrowed() {
+    /* public void showMyBorrowed() {
         for (BorrowedBook myBooks : myBorrowed) {
             System.out.println(myBooks.getBorrowedBook().getTitle());
         }
-    }
+    } */
 
     @Override
     public String toString() {
@@ -72,8 +72,8 @@ public class User implements Serializable {
         users.add(new User("John", "1234", true));
         users.add(new User("Smith", "1234", false));
         users.add(new User("Ali", "1234", false));
-        users.add(new User("Gasem", "1234", false));
-        users.add(new User("Mikool", "1234", false));
+        users.add(new User("Ammar", "1234", false));
+        users.add(new User("Toni", "1234", false));
 
         return users;
     }

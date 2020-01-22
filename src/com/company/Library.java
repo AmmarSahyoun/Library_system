@@ -1,46 +1,39 @@
 package com.company;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Library {
 
-    private User logedUser = null; // current user that will borrow books
+    private User loggedUser = null; // current user that will borrow books
     private ArrayList<Book> books = new ArrayList<>();
     private ArrayList<User> users = new ArrayList<>();
 
-    public Library() {
-    }
-
-    public Library(ArrayList<Book> definedBooks, ArrayList<User> definedUsers) {
+    public Library(ArrayList<Book> definedBooks, ArrayList<User> definedUsers) { // ?? when we use list in constructor
         this.books = definedBooks;
-        this.users = definedUsers ;
+        this.users = definedUsers;
     }
 
-    public boolean Login(String Username, String Password)
-    {
+    public boolean Login(String Username, String Password) {
         boolean result = false;
 
-        for (User thisUser : users)
-        {
+        for (User thisUser : users) {
             if (thisUser.getUserName().equalsIgnoreCase(Username)
-                    && thisUser.getPassword().equals(Password))
-            {
+                    && thisUser.getPassword().equals(Password)) {
                 result = true;
-                logedUser = thisUser;
+                loggedUser = thisUser;
                 break;
             }
-
         }
-
         return result;
     }
 
-    public boolean isAdmin()
-    {
-        return logedUser.isAdmin();
+    public boolean isAdmin() {
+        return loggedUser.isAdmin();
     }
 
     public ArrayList<Book> getBooks() {
+
         return books;
     }
 
@@ -68,5 +61,83 @@ public class Library {
         users.add(user);
     }
 
+    // Sajeh
+    public int getIndexOf(Book book) {
+        return books.indexOf(book.getTitle());
+    }
+
+    public ArrayList<Book> showBooksList() {
+        for (Book book : books) {
+            System.out.println("Book name: " + book.getTitle() + ", Category: " + book.bookCategory);
+        }
+        return books;
+    }
+
+    public String showBookInfo(String title) {
+        for (Book booKInfo : books) {
+            if (title.equalsIgnoreCase(booKInfo.getTitle())) {
+                return booKInfo.toString();
+            }
+        }
+        return null;
+    }
+
+    public ArrayList<Book> borrowBook(String title) {
+        for (Book borrowBook : books) {
+            if (title.equalsIgnoreCase(borrowBook.getTitle())) {
+                if (borrowBook.isAvailable()) {
+                    borrowBook.setAvailable(false);
+                    borrowBook.setBorrowedDate(new Date());
+                    borrowBook.setReturnDate(null);
+
+                    // loggedUser.addBook(borrowedRemoved);
+
+
+                    return null;
+                } else System.out.println("book is already borrowed!");
+            }
+            return null;
+        }
+        return null;
+    }
+
+    public String searchBookByTitle(String title) {
+        for (Book book : books) {
+            if (title.equalsIgnoreCase(book.getTitle())) {
+                return book.toString();
+            }
+        }
+        return null;
+    }
+
+    public String searchBookByAuthor(String title) {
+        for (Book book : books) {
+            if (title.equalsIgnoreCase(book.getAuthor())) {
+                return book.toString();
+            }
+        }
+        return null;
+    }
+
+    public ArrayList<Book> borrowBookIndefinitely() {
+        return null;
+    }
+
+    public ArrayList<Book> showMyBorrowedBooks() {
+        return null;
+    }
+
+    public ArrayList<Book> showAvailableBooks() {
+        return null;
+    }
+
+    public ArrayList<String> orderBookByTitle() {
+        return null;
+    }
+
+    public String showBookReturnTime() {
+        return null;
+    }
 
 }
+
