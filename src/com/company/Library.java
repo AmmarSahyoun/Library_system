@@ -5,11 +5,11 @@ import java.util.Date;
 
 public class Library {
 
-    private User loggedUser = null; // current user that will borrow books
+    private User loggedUser = null;
     private ArrayList<Book> books = new ArrayList<>();
     private ArrayList<User> users = new ArrayList<>();
 
-    public Library(ArrayList<Book> definedBooks, ArrayList<User> definedUsers) { // ?? when we use list in constructor
+    public Library(ArrayList<Book> definedBooks, ArrayList<User> definedUsers) {
         this.books = definedBooks;
         this.users = definedUsers;
     }
@@ -21,7 +21,7 @@ public class Library {
             if (thisUser.getUserName().equalsIgnoreCase(Username)
                     && thisUser.getPassword().equals(Password)) {
                 result = true;
-                loggedUser = thisUser;
+                loggedUser = thisUser; // ref
                 break;
             }
         }
@@ -41,36 +41,16 @@ public class Library {
         return users;
     }
 
-    public void setBooks(ArrayList<Book> books) {
-        this.books = books;
-    }
-
-    public void setUsers(ArrayList<User> users) {
-        this.users = users;
-    }
-
-    public void addBook(Book book, User user) {
-        if (user.isAdmin() == true) {
-            books.add(book);
-        } else {
-            System.out.println("\n Only Librarian add books!");
-        }
-    }
-
-    public void addUser(User user) {
-        users.add(user);
-    }
-
-    // Sajeh
-    public int getIndexOf(Book book) {
-        return books.indexOf(book.getTitle());
-    }
-
-    public ArrayList<Book> showBooksList() {
+    public void showAllBooks(String available) {
         for (Book book : books) {
+            if (available != null) {
+                boolean availableStatus = Boolean.parseBoolean(available);
+                if (book.isAvailable() != availableStatus) {
+                    continue;
+                }
+            }
             System.out.println("Book name: " + book.getTitle() + ", Category: " + book.bookCategory);
         }
-        return books;
     }
 
     public String showBookInfo(String title) {
@@ -82,62 +62,82 @@ public class Library {
         return null;
     }
 
-    public ArrayList<Book> borrowBook(String title) {
-        for (Book borrowBook : books) {
-            if (title.equalsIgnoreCase(borrowBook.getTitle())) {
-                if (borrowBook.isAvailable()) {
-                    borrowBook.setAvailable(false);
-                    borrowBook.setBorrowedDate(new Date());
-                    borrowBook.setReturnDate(null);
 
-                    // loggedUser.addBook(borrowedRemoved);
+    public Book borrowBook(String title, boolean Indefinitely) {
+        Book bookToBorrow = searchBookList(title, BookFields.TITLE);
 
-
-                    return null;
-                } else System.out.println("book is already borrowed!");
-            }
+        if (bookToBorrow == null || !bookToBorrow.isAvailable()) {
             return null;
         }
-        return null;
+        Book rentedBook = bookToBorrow.BorrowThisBook(loggedUser.getUserName(), 14, Indefinitely); // Value
+        loggedUser.addBook(rentedBook);
+        return bookToBorrow;
     }
 
-    public String searchBookByTitle(String title) {
-        for (Book book : books) {
-            if (title.equalsIgnoreCase(book.getTitle())) {
-                return book.toString();
-            }
+    public Book returnBook(String title) {
+        Book bookToReturn = loggedUser.searchBookList(title, BookFields.TITLE);
+        Book originalBook = searchBookList(title, BookFields.TITLE);
+
+        if (bookToReturn == null || originalBook == null) {
+            return null;
         }
-        return null;
+
+        originalBook.setAvailable(true);
+        originalBook.setReturnDate(new Date());
+        loggedUser.removeBook(bookToReturn);
+        return bookToReturn;
     }
 
-    public String searchBookByAuthor(String title) {
-        for (Book book : books) {
-            if (title.equalsIgnoreCase(book.getAuthor())) {
-                return book.toString();
-            }
-        }
-        return null;
+    public String findBookByTitle(String title) {
+        return searchBookList(title, BookFields.TITLE).toString();
     }
 
-    public ArrayList<Book> borrowBookIndefinitely() {
-        return null;
+    public String findBookByAuthor(String author) {
+        return searchBookList(author, BookFields.AUTHOR).toString();
     }
+
 
     public ArrayList<Book> showMyBorrowedBooks() {
-        return null;
+        return loggedUser.getMyBorrowed();
     }
 
-    public ArrayList<Book> showAvailableBooks() {
-        return null;
+
+    public String removeBook(String title) {
+        books.removeIf(booK -> title.equalsIgnoreCase(booK.getTitle()));
+        return "done";
     }
 
-    public ArrayList<String> orderBookByTitle() {
-        return null;
+    public void showAllUsers() {
+        for (User user : users) {
+            System.out.println("User: " + user.toString());
+        }
     }
 
-    public String showBookReturnTime() {
-        return null;
+    public void allUsersBorrowedBooks() {
+        for (User user : users) {
+            if (user.getMyBorrowed().size() > 0) {
+                System.out.println("User: " + user.toString());
+                System.out.println("----------------------------");
+                for (Book exitingBook : user.getMyBorrowed()) {
+                    System.out.println("Book: " + exitingBook.getTitle());
+                }
+            }
+        }
     }
 
+    public void userBorrowedBooks(String userName) {
+        for (User user : users) {
+            if (user.getUserName().equalsIgnoreCase(userName) && user.getMyBorrowed().size() > 0) {
+                System.out.println("User: " + user.toString());
+                System.out.println("----------------------------");
+                for (Book exitingBook : user.getMyBorrowed()) {
+                    System.out.println("Book: " + exitingBook.getTitle());
+                }
+                return;
+            }
+        }
+
+        System.out.println("No books found for this user!");
+    }
 }
 

@@ -13,8 +13,7 @@ public class ObjectSerializer {
         this.fileName = fileName;
     }
 
-    // Serialize
-    public boolean WriteObjectToFile(Object serObj) {  // why boolean ?
+    public boolean WriteObjectToFile(Object serObj) {
 
         try {
 
@@ -30,8 +29,7 @@ public class ObjectSerializer {
         return false;
     }
 
-    // Deserialize
-    public Object ReadObjectFromFile() {   // why and this type object
+    public Object ReadObjectFromFile() {
         Object scannedObj = null;
 
         try {

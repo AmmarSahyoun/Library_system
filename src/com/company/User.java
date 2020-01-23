@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class User implements Serializable {
     private String userName;
     private String password;
-    private ArrayList<BorrowedBook> myBorrowed;
+    private ArrayList<Book> myBorrowed;
     private boolean admin;
 
     public User(String userName, String password, boolean admin) {
@@ -24,49 +24,49 @@ public class User implements Serializable {
         return password;
     }
 
-    public ArrayList<BorrowedBook> getMyBorrowed() {
+    public ArrayList<Book> getMyBorrowed() {
         return myBorrowed;
     }
 
-    public boolean isAdmin() {
-        return admin;
-    }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
+    public Book searchBookList(String phrase, BookFields bookFields) {
+        Book resultBook = null;
+        String searchPhrase = null;
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setMyBorrowed(ArrayList<BorrowedBook> myBorrowed) {
-        this.myBorrowed = myBorrowed;
-    }
-
-    public void setAdmin(boolean admin) {
-        this.admin = admin;
-    }
-
-    /* public void showMyBorrowed() {
-        for (BorrowedBook myBooks : myBorrowed) {
-            System.out.println(myBooks.getBorrowedBook().getTitle());
+        for (Book listBook : this.myBorrowed) {
+            if (bookFields == BookFields.TITLE) {
+                searchPhrase = listBook.getTitle();
+            } else if (bookFields == BookFields.AUTHOR) {
+                searchPhrase = listBook.getAuthor();
+            } else if (bookFields == BookFields.DESCRIPTION) {
+                searchPhrase = listBook.getDescription();
+            }
+            if (searchPhrase.equalsIgnoreCase((phrase))) {
+                resultBook = listBook; //  Ref
+                break;
+            }
         }
-    } */
+        return resultBook;
+    }
 
     @Override
     public String toString() {
         if (admin) {
             return userName + " (Admin)";
-        }
-        else {
+        } else {
             return userName;
         }
     }
 
+    public void addBook(Book rentedBook) {
+        myBorrowed.add(rentedBook);
+    }
 
-    public static ArrayList<User> seedData()
-    {
+    public void removeBook(Book removedBook){
+        myBorrowed.remove(removedBook);
+    }
+
+    public static ArrayList<User> seedData() {
         ArrayList<User> users = new ArrayList();
 
         users.add(new User("John", "1234", true));

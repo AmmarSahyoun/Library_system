@@ -5,17 +5,19 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class Book implements Serializable {
+
     public BookCategory bookCategory;
     private String title;
     private String author;
     private String description;
     private boolean available;
-    private Date borrowedDate ;
-    private Date returnDate ;
+    private String withUserName;
+    private Date borrowedDate;
+    private Date returnDate;
     private int maxBorrowingDays = 14;
+    private boolean indefinitely = false;
 
-
-    public Book(BookCategory bookCategory, String title, String author, String description, boolean available, Date borrowedDate, Date returnDate, int maxBorrowingDays) {
+    public Book(BookCategory bookCategory, String title, String author, String description, boolean available, Date borrowedDate, Date returnDate, int maxBorrowingDays, String userName) {
         this.bookCategory = bookCategory;
         this.title = title;
         this.author = author;
@@ -24,44 +26,33 @@ public class Book implements Serializable {
         this.borrowedDate = borrowedDate;
         this.returnDate = returnDate;
         this.maxBorrowingDays = maxBorrowingDays;
-    }
-
-
-    public void setBorrowedDate(Date borrowedDate) {
-        this.borrowedDate = borrowedDate;
+        this.withUserName = userName;
     }
 
     public void setReturnDate(Date returnDate) {
         this.returnDate = returnDate;
     }
 
-    public void setMaxBorrowingDays(int maxBorrowingDays) {
-        this.maxBorrowingDays = maxBorrowingDays;
-    }
-
-
     public Date getBorrowedDate() {
-        return borrowedDate;
-    }
-
-    public Date getReturnDate() {
-        return returnDate;
+        if (indefinitely) {
+            return new Date();
+        } else {
+            return borrowedDate;
+        }
     }
 
     public int getMaxBorrowingDays() {
         return maxBorrowingDays;
     }
 
-
     @Override
     public String toString() {
-        return  "\n=========================================" + "\nCategory: " + bookCategory +
+        return "\n=========================================" + "\nCategory: " + bookCategory +
                 "\nTitle: " + title +
                 "\nAuthor: " + author +
                 "\nDescription: " + description +
                 "\nAvailable: " + (available ? "Yes" : "No") + "\n==========================================";
     }
-
 
     public Book(BookCategory bookCategory, String title, String author, String description, boolean available) {
         this.bookCategory = bookCategory;
@@ -70,7 +61,6 @@ public class Book implements Serializable {
         this.description = description;
         this.available = available;
     }
-
 
     public BookCategory getBookCategory() {
         return bookCategory;
@@ -92,27 +82,9 @@ public class Book implements Serializable {
         return available;
     }
 
-
-    public void setBookCategory(BookCategory bookCategory) {
-        this.bookCategory = bookCategory;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public void setAvailable(boolean available) {
         this.available = available;
     }
-
 
     public static ArrayList<Book> seedData() {
         ArrayList<Book> books = new ArrayList<>();
@@ -129,5 +101,19 @@ public class Book implements Serializable {
         books.add(new Book(BookCategory.TECHNOLOGY, "Hackers", "Steven Levy", "The book traces the exploits of the computer revolution's original hackers -- those brilliant and eccentric ", true));
 
         return books;
+    }
+
+    public Book BorrowThisBook(String userName, int MaximumDays, boolean indefinitely) {
+        if (!this.isAvailable())
+            return null;
+
+        this.borrowedDate = new Date();
+        this.returnDate = null;
+        this.withUserName = userName;
+        this.available = false;
+        this.indefinitely = indefinitely;
+
+        Book newCopy = new Book(this.bookCategory, this.title, this.author, this.description, this.available, this.borrowedDate, this.returnDate, this.maxBorrowingDays, this.withUserName); // by value
+        return newCopy;
     }
 }
