@@ -28,6 +28,25 @@ public class User implements Serializable {
         return myBorrowed;
     }
 
+    public boolean isAdmin() {
+        return admin;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setMyBorrowed(ArrayList<Book> myBorrowed) {
+        this.myBorrowed = myBorrowed;
+    }
+
+    public void setAdmin(boolean admin) {
+        this.admin = admin;
+    }
 
     public Book searchBookList(String phrase, BookFields bookFields) {
         Book resultBook = null;

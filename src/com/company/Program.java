@@ -5,6 +5,7 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Scanner;
 
 public class Program {
@@ -99,7 +100,7 @@ public class Program {
             if (choice == 15) {
                 nationalLibrary.showAllUsers();
             }
-            if (choice == 16) { //
+            if (choice == 16) {             //
                 searchForUser();
             }
             if (choice == 17) {
@@ -176,6 +177,20 @@ public class Program {
         System.out.println(nationalLibrary.showBookInfo(bookTitle));
     }
 
+    private void borrowABook() {
+        System.out.println("Enter a book title to borrow: ");
+        String bookToBorrow = scn.nextLine();
+
+        Book existingBook = nationalLibrary.borrowBook(bookToBorrow, false);
+        if (existingBook != null) {
+            System.out.println("Done.");
+            saveDataBase(nationalLibrary.getBooks(), BOOKS_FILE);
+            saveDataBase(nationalLibrary.getUsers(), USERS_FILE);
+        } else {
+            System.out.println("Unable to borrow book.");
+        }
+    }
+
     private void findBookByTitle() {
         System.out.println("Enter a book title to find: ");
         String titleToFind = scn.nextLine();
@@ -212,21 +227,25 @@ public class Program {
         Book selectedBook = null;
 
         for (Book borrowedBook : nationalLibrary.showMyBorrowedBooks()) {
-            System.out.println("You borrowed: " + borrowedBook.getTitle());
+            System.out.println("Book title: " + borrowedBook.getTitle());
         }
 
-        System.out.print("Enter the book title to be returned: ");
+        System.out.print("Enter the book title: ");
         Scanner scan = new Scanner(System.in);
         String returnTitle = scan.nextLine();
-        Book borrowedBook = nationalLibrary.returnBook(returnTitle);
+        Book borrowedBook = nationalLibrary.returnBook( returnTitle);
 
         if (borrowedBook != null) {
-            System.out.println("Book returned successfully.");
+            System.out.println("Book returned.");
             saveDataBase(nationalLibrary.getBooks(), BOOKS_FILE);
             saveDataBase(nationalLibrary.getUsers(), USERS_FILE);
         } else {
             System.out.println("Unable to return the book.");
         }
+    }
+
+    private void orderBookByTitle() {
+
     }
 
     private void bookRemainingTime() {
@@ -248,7 +267,7 @@ public class Program {
             Duration diff = Duration.between(d1.atStartOfDay(), d2.atStartOfDay());
             long diffDays = diff.toDays();
 
-            System.out.println("Remaining days: " + (borrowedBook.getMaxBorrowingDays() - (int) diffDays));
+            System.out.println("Remaining days: " + (borrowedBook.getMaxBorrowingDays() - (int)diffDays));
         } else {
             System.out.println("Unable to calculate the book return.");
         }
@@ -259,7 +278,7 @@ public class Program {
             return t1.getTitle().compareTo(t2.getTitle());
         });
         for (Book book : nationalLibrary.getBooks()) {
-            System.out.printf("Title: %s, category: %s, (Available  %s)\n", book.getTitle(), book.getBookCategory(), book.isAvailable() ? "Yes" : "No");
+                System.out.printf("Title: %s, category: %s, (Available  %s)\n", book.getTitle(), book.getBookCategory(), book.isAvailable() ? "Yes" : "No");
             System.out.println("....................................................");
         }
     }
@@ -304,6 +323,7 @@ public class Program {
         System.out.println("Done! '" + title + "' was removed successfully");
     }
 
+
     public void searchForUser() {
 
     }
@@ -318,6 +338,7 @@ public class Program {
         System.out.print("Enter a username to show borrowed books: ");
         String userName = scn.nextLine();
         nationalLibrary.userBorrowedBooks(userName);
+
     }
 
 

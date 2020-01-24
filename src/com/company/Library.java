@@ -62,6 +62,25 @@ public class Library {
         return null;
     }
 
+    public Book searchBookList(String phrase, BookFields bookFields) {
+        Book resultBook = null;
+        String searchPhrase = null;
+
+        for (Book listBook : books) {
+            if (bookFields == BookFields.TITLE) {
+                searchPhrase = listBook.getTitle();
+            } else if (bookFields == BookFields.AUTHOR) {
+                searchPhrase = listBook.getAuthor();
+            } else if (bookFields == BookFields.DESCRIPTION) {
+                searchPhrase = listBook.getDescription();
+            }
+            if (searchPhrase.equalsIgnoreCase((phrase))) {
+                resultBook = listBook; //  Ref
+                break;
+            }
+        }
+        return resultBook;
+    }
 
     public Book borrowBook(String title, boolean Indefinitely) {
         Book bookToBorrow = searchBookList(title, BookFields.TITLE);
