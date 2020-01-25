@@ -33,6 +33,7 @@ public class Book implements Serializable {
         this.returnDate = returnDate;
     }
 
+
     public Date getBorrowedDate() {
         if (indefinitely) {
             return new Date();
@@ -81,7 +82,6 @@ public class Book implements Serializable {
     public boolean isAvailable() {
         return available;
     }
-
     public void setAvailable(boolean available) {
         this.available = available;
     }

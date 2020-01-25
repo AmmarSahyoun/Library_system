@@ -5,7 +5,6 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Scanner;
 
 public class Program {
@@ -14,9 +13,17 @@ public class Program {
     private final String BOOKS_FILE = "./Books.dat";
     private final String USERS_FILE = "./Users.dat";
     public int choice;
+    boolean loginStatus = false;
     Scanner scn = new Scanner(System.in);
 
     public Program() {
+        SetupLibrary();
+        loginStatus = Login();
+        if (loginStatus == true) {
+            run();
+        } else {
+            System.out.println("Wrong username or password!!!");
+        }
     }
 
     public void run() {
@@ -100,8 +107,8 @@ public class Program {
             if (choice == 15) {
                 nationalLibrary.showAllUsers();
             }
-            if (choice == 16) {             //
-                searchForUser();
+            if (choice == 16) {
+                searchUserByName();
             }
             if (choice == 17) {
                 allUsersBorrowedBooks();
@@ -233,7 +240,7 @@ public class Program {
         System.out.print("Enter the book title: ");
         Scanner scan = new Scanner(System.in);
         String returnTitle = scan.nextLine();
-        Book borrowedBook = nationalLibrary.returnBook( returnTitle);
+        Book borrowedBook = nationalLibrary.returnBorrowedBook(returnTitle);
 
         if (borrowedBook != null) {
             System.out.println("Book returned.");
@@ -242,10 +249,6 @@ public class Program {
         } else {
             System.out.println("Unable to return the book.");
         }
-    }
-
-    private void orderBookByTitle() {
-
     }
 
     private void bookRemainingTime() {
@@ -267,7 +270,7 @@ public class Program {
             Duration diff = Duration.between(d1.atStartOfDay(), d2.atStartOfDay());
             long diffDays = diff.toDays();
 
-            System.out.println("Remaining days: " + (borrowedBook.getMaxBorrowingDays() - (int)diffDays));
+            System.out.println("Remaining days: " + (borrowedBook.getMaxBorrowingDays() - (int) diffDays));
         } else {
             System.out.println("Unable to calculate the book return.");
         }
@@ -278,7 +281,7 @@ public class Program {
             return t1.getTitle().compareTo(t2.getTitle());
         });
         for (Book book : nationalLibrary.getBooks()) {
-                System.out.printf("Title: %s, category: %s, (Available  %s)\n", book.getTitle(), book.getBookCategory(), book.isAvailable() ? "Yes" : "No");
+            System.out.printf("Title: %s, category: %s, (Available  %s)\n", book.getTitle(), book.getBookCategory(), book.isAvailable() ? "Yes" : "No");
             System.out.println("....................................................");
         }
     }
@@ -323,9 +326,10 @@ public class Program {
         System.out.println("Done! '" + title + "' was removed successfully");
     }
 
-
-    public void searchForUser() {
-
+    public void searchUserByName() {
+        System.out.print("Enter the name to search for a user: ");
+        String userName = scn.nextLine();
+        nationalLibrary.searchUserByName(userName);
     }
 
     public void allUsersBorrowedBooks() {
@@ -340,7 +344,6 @@ public class Program {
         nationalLibrary.userBorrowedBooks(userName);
 
     }
-
 
 }
 

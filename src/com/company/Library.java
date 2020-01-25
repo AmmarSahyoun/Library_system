@@ -93,7 +93,7 @@ public class Library {
         return bookToBorrow;
     }
 
-    public Book returnBook(String title) {
+    public Book returnBorrowedBook(String title) {
         Book bookToReturn = loggedUser.searchBookList(title, BookFields.TITLE);
         Book originalBook = searchBookList(title, BookFields.TITLE);
 
@@ -115,11 +115,9 @@ public class Library {
         return searchBookList(author, BookFields.AUTHOR).toString();
     }
 
-
     public ArrayList<Book> showMyBorrowedBooks() {
         return loggedUser.getMyBorrowed();
     }
-
 
     public String removeBook(String title) {
         books.removeIf(booK -> title.equalsIgnoreCase(booK.getTitle()));
@@ -141,6 +139,15 @@ public class Library {
                     System.out.println("Book: " + exitingBook.getTitle());
                 }
             }
+        }
+    }
+
+    public void searchUserByName(String userName) {
+        for (User user : users) {
+            if (user.getUserName().equalsIgnoreCase(userName)) {
+                System.out.println("found: " + user);
+            }
+
         }
     }
 
