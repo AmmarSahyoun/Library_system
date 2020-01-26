@@ -16,7 +16,15 @@ public class Program {
     boolean loginStatus = false;
     Scanner scn = new Scanner(System.in);
 
-    public Program() {
+    public static void main(String[] args) {
+        Program myProgram = new Program();
+        myProgram.startProgram();
+    }
+
+    public Program(){
+    }
+
+    public void startProgram(){
         SetupLibrary();
         loginStatus = Login();
         if (loginStatus == true) {
@@ -329,7 +337,11 @@ public class Program {
     public void searchUserByName() {
         System.out.print("Enter the name to search for a user: ");
         String userName = scn.nextLine();
-        nationalLibrary.searchUserByName(userName);
+        User searchUser = nationalLibrary.searchUserByName(userName);
+        if(searchUser == null)
+        {
+            System.out.println("mot registered");
+        }
     }
 
     public void allUsersBorrowedBooks() {

@@ -88,7 +88,7 @@ public class Library {
         if (bookToBorrow == null || !bookToBorrow.isAvailable()) {
             return null;
         }
-        Book rentedBook = bookToBorrow.BorrowThisBook(loggedUser.getUserName(), 14, Indefinitely); // Value
+        Book rentedBook = bookToBorrow.borrowThisBook(loggedUser.getUserName(), 14, Indefinitely); // Value
         loggedUser.addBook(rentedBook);
         return bookToBorrow;
     }
@@ -142,13 +142,15 @@ public class Library {
         }
     }
 
-    public void searchUserByName(String userName) {
+    public User searchUserByName(String userName) {
+        User foundUser = null;
         for (User user : users) {
             if (user.getUserName().equalsIgnoreCase(userName)) {
                 System.out.println("found: " + user);
             }
 
         }
+        return foundUser;
     }
 
     public void userBorrowedBooks(String userName) {

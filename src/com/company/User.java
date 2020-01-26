@@ -32,22 +32,6 @@ public class User implements Serializable {
         return admin;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setMyBorrowed(ArrayList<Book> myBorrowed) {
-        this.myBorrowed = myBorrowed;
-    }
-
-    public void setAdmin(boolean admin) {
-        this.admin = admin;
-    }
-
     public Book searchBookList(String phrase, BookFields bookFields) {
         Book resultBook = null;
         String searchPhrase = null;
@@ -88,8 +72,8 @@ public class User implements Serializable {
     public static ArrayList<User> seedData() {
         ArrayList<User> users = new ArrayList();
 
-        users.add(new User("John", "1234", true));
-        users.add(new User("Smith", "1234", false));
+        users.add(new User("Johan", "1234", true));
+        users.add(new User("James", "1234", false));
         users.add(new User("Ali", "1234", false));
         users.add(new User("Ammar", "1234", false));
         users.add(new User("Toni", "1234", false));

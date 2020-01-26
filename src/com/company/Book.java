@@ -27,12 +27,12 @@ public class Book implements Serializable {
         this.returnDate = returnDate;
         this.maxBorrowingDays = maxBorrowingDays;
         this.withUserName = userName;
+
     }
 
     public void setReturnDate(Date returnDate) {
         this.returnDate = returnDate;
     }
-
 
     public Date getBorrowedDate() {
         if (indefinitely) {
@@ -103,7 +103,7 @@ public class Book implements Serializable {
         return books;
     }
 
-    public Book BorrowThisBook(String userName, int MaximumDays, boolean indefinitely) {
+    public Book borrowThisBook(String userName, int MaximumDays, boolean indefinitely) {
         if (!this.isAvailable())
             return null;
 
@@ -113,7 +113,7 @@ public class Book implements Serializable {
         this.available = false;
         this.indefinitely = indefinitely;
 
-        Book newCopy = new Book(this.bookCategory, this.title, this.author, this.description, this.available, this.borrowedDate, this.returnDate, this.maxBorrowingDays, this.withUserName); // by value
+        Book newCopy = new Book(this.bookCategory, this.title, this.author, this.description, false, this.borrowedDate, null, this.maxBorrowingDays, this.withUserName);
         return newCopy;
     }
 }
