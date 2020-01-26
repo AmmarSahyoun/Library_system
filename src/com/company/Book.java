@@ -103,17 +103,11 @@ public class Book implements Serializable {
         return books;
     }
 
-    public Book borrowThisBook(String userName, int MaximumDays, boolean indefinitely) {
+    public Book borrowThisBook(String withUserName, int MaximumDays, boolean indefinitely) {
         if (!this.isAvailable())
             return null;
 
-        this.borrowedDate = new Date();
-        this.returnDate = null;
-        this.withUserName = userName;
-        this.available = false;
-        this.indefinitely = indefinitely;
-
-        Book newCopy = new Book(this.bookCategory, this.title, this.author, this.description, false, this.borrowedDate, null, this.maxBorrowingDays, this.withUserName);
+        Book newCopy = new Book(bookCategory, title, author, description, false, borrowedDate, null, maxBorrowingDays, withUserName);
         return newCopy;
     }
 }

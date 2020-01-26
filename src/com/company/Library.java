@@ -6,22 +6,21 @@ import java.util.Date;
 public class Library {
 
     private User loggedUser = null;
-    private ArrayList<Book> books = new ArrayList<>();
-    private ArrayList<User> users = new ArrayList<>();
+    private ArrayList<Book> books;
+    private ArrayList<User> users;
 
     public Library(ArrayList<Book> definedBooks, ArrayList<User> definedUsers) {
         this.books = definedBooks;
         this.users = definedUsers;
     }
 
-    public boolean Login(String Username, String Password) {
+    public boolean login(String Username, String Password) {
         boolean result = false;
-
         for (User thisUser : users) {
             if (thisUser.getUserName().equalsIgnoreCase(Username)
                     && thisUser.getPassword().equals(Password)) {
                 result = true;
-                loggedUser = thisUser; // ref
+                loggedUser = thisUser;
                 break;
             }
         }
@@ -33,7 +32,6 @@ public class Library {
     }
 
     public ArrayList<Book> getBooks() {
-
         return books;
     }
 
@@ -44,6 +42,7 @@ public class Library {
     public void showAllBooks(String available) {
         for (Book book : books) {
             if (available != null) {
+
                 boolean availableStatus = Boolean.parseBoolean(available);
                 if (book.isAvailable() != availableStatus) {
                     continue;
@@ -59,7 +58,7 @@ public class Library {
                 return booKInfo.toString();
             }
         }
-        return null;
+        return "WE DO NOT HAVE THIS BOOK";
     }
 
     public Book searchBookList(String phrase, BookFields bookFields) {
@@ -75,7 +74,7 @@ public class Library {
                 searchPhrase = listBook.getDescription();
             }
             if (searchPhrase.equalsIgnoreCase((phrase))) {
-                resultBook = listBook; //  Ref
+                resultBook = listBook;
                 break;
             }
         }
@@ -88,7 +87,7 @@ public class Library {
         if (bookToBorrow == null || !bookToBorrow.isAvailable()) {
             return null;
         }
-        Book rentedBook = bookToBorrow.borrowThisBook(loggedUser.getUserName(), 14, Indefinitely); // Value
+        Book rentedBook = bookToBorrow.borrowThisBook(loggedUser.getUserName(), 14, Indefinitely);
         loggedUser.addBook(rentedBook);
         return bookToBorrow;
     }
@@ -108,11 +107,19 @@ public class Library {
     }
 
     public String findBookByTitle(String title) {
-        return searchBookList(title, BookFields.TITLE).toString();
+        try {
+            return searchBookList(title, BookFields.TITLE).toString();
+        } catch (Exception e) {
+            return "enter a valid BOOK TITLE";
+        }
     }
 
     public String findBookByAuthor(String author) {
-        return searchBookList(author, BookFields.AUTHOR).toString();
+        try {
+            return searchBookList(author, BookFields.AUTHOR).toString();
+        } catch (Exception e) {
+            return "sorry we don't have any book for this author NAME!";
+        }
     }
 
     public ArrayList<Book> showMyBorrowedBooks() {
@@ -134,10 +141,10 @@ public class Library {
         for (User user : users) {
             if (user.getMyBorrowed().size() > 0) {
                 System.out.println("User: " + user.toString());
-                System.out.println("----------------------------");
+
                 for (Book exitingBook : user.getMyBorrowed()) {
                     System.out.println("Book: " + exitingBook.getTitle());
-                }
+                }  System.out.println("----------------------------");
             }
         }
     }

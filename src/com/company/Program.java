@@ -21,16 +21,17 @@ public class Program {
         myProgram.startProgram();
     }
 
-    public Program(){
+    public Program() {
+        SetupLibrary();
     }
 
-    public void startProgram(){
-        SetupLibrary();
-        loginStatus = Login();
+    public void startProgram() {
+        loginStatus = login();
         if (loginStatus == true) {
             run();
         } else {
             System.out.println("Wrong username or password!!!");
+            startProgram();
         }
     }
 
@@ -66,8 +67,10 @@ public class Program {
                 choice = Integer.parseInt(scn.nextLine());
             } catch (NumberFormatException ex) {
                 System.err.println("Choose a valid number");
+                run();
             } catch (Exception e) {
-                System.out.println("Not a valid number");
+                System.out.println("Not a valid number!!");
+                run();
             }
 
             if (choice == 1) {
@@ -119,7 +122,7 @@ public class Program {
                 searchUserByName();
             }
             if (choice == 17) {
-                allUsersBorrowedBooks();
+                nationalLibrary.allUsersBorrowedBooks();
             }
             if (choice == 18) {
                 userBorrowedBooks();
@@ -172,7 +175,7 @@ public class Program {
         fileObject.WriteObjectToFile(arrayToSave);
     }
 
-    public boolean Login() {
+    public boolean login() {
         System.out.println("\n     .:Welcome to the Library Login:. ");
         System.out.println("Please Enter your username:  ");
         String inpUser = scn.nextLine();
@@ -181,7 +184,7 @@ public class Program {
         String inpPass = scn.nextLine();
 
         boolean loginStatus = false;
-        loginStatus = nationalLibrary.Login(inpUser, inpPass);
+        loginStatus = nationalLibrary.login(inpUser, inpPass);
         return loginStatus;
 
     }
@@ -202,20 +205,20 @@ public class Program {
             saveDataBase(nationalLibrary.getBooks(), BOOKS_FILE);
             saveDataBase(nationalLibrary.getUsers(), USERS_FILE);
         } else {
-            System.out.println("Unable to borrow book.");
+            System.out.println("enter a valid BOOK NAME to borrow!");
         }
     }
 
     private void findBookByTitle() {
         System.out.println("Enter a book title to find: ");
         String titleToFind = scn.nextLine();
-        System.out.println("Found:" + nationalLibrary.findBookByTitle(titleToFind));
+        System.out.println(nationalLibrary.findBookByTitle(titleToFind));
     }
 
     private void findBookByAuthor() {
         System.out.println("Enter a book author to find: ");
         String authorToFind = scn.nextLine();
-        System.out.println("Found:" + nationalLibrary.findBookByAuthor(authorToFind));
+        System.out.println(nationalLibrary.findBookByAuthor(authorToFind));
     }
 
     private void borrowBookIndefinitely() {
@@ -224,11 +227,11 @@ public class Program {
 
         Book existingBook = nationalLibrary.borrowBook(bookToBorrow, true);
         if (existingBook != null) {
-            System.out.println("Done.");
+            System.out.println("Done, book has borrowed for indefinitely time.");
             saveDataBase(nationalLibrary.getBooks(), BOOKS_FILE);
             saveDataBase(nationalLibrary.getUsers(), USERS_FILE);
         } else {
-            System.out.println("Unable to borrow book.");
+            System.out.println("enter a valid BOOK NAME!");
         }
     }
 
@@ -271,16 +274,19 @@ public class Program {
         String returnTitle = scan.nextLine();
 
         Book borrowedBook = nationalLibrary.searchBookList(returnTitle, BookFields.TITLE);
+        try {
+            if (borrowedBook != null) {
+                LocalDate d1 = borrowedBook.getBorrowedDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                LocalDate d2 = LocalDate.now();
+                Duration diff = Duration.between(d2.atStartOfDay(), d1.atStartOfDay());
+                long diffDays = diff.toDays();
 
-        if (borrowedBook != null) {
-            LocalDate d1 = borrowedBook.getBorrowedDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-            LocalDate d2 = LocalDate.now();
-            Duration diff = Duration.between(d1.atStartOfDay(), d2.atStartOfDay());
-            long diffDays = diff.toDays();
-
-            System.out.println("Remaining days: " + (borrowedBook.getMaxBorrowingDays() - (int) diffDays));
-        } else {
-            System.out.println("Unable to calculate the book return.");
+                System.out.println("Remaining days: " + (borrowedBook.getMaxBorrowingDays() - (int) diffDays));
+            } else {
+                System.out.println("Unable to calculate the book return.");
+            }
+        } catch (Exception e) {
+            System.out.println(borrowedBook.getBorrowedDate());
         }
     }
 
@@ -338,14 +344,9 @@ public class Program {
         System.out.print("Enter the name to search for a user: ");
         String userName = scn.nextLine();
         User searchUser = nationalLibrary.searchUserByName(userName);
-        if(searchUser == null)
-        {
+        if (searchUser != null) {
             System.out.println("mot registered");
         }
-    }
-
-    public void allUsersBorrowedBooks() {
-        nationalLibrary.allUsersBorrowedBooks();
     }
 
     public void userBorrowedBooks() {

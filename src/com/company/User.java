@@ -6,13 +6,12 @@ import java.util.ArrayList;
 public class User implements Serializable {
     private String userName;
     private String password;
-    private ArrayList<Book> myBorrowed;
     private boolean admin;
+    private ArrayList<Book> myBorrowed = new ArrayList<>();
 
     public User(String userName, String password, boolean admin) {
         this.userName = userName;
         this.password = password;
-        this.myBorrowed = new ArrayList();
         this.admin = admin;
     }
 
@@ -45,7 +44,7 @@ public class User implements Serializable {
                 searchPhrase = listBook.getDescription();
             }
             if (searchPhrase.equalsIgnoreCase((phrase))) {
-                resultBook = listBook; //  Ref
+                resultBook = listBook;
                 break;
             }
         }
@@ -65,7 +64,7 @@ public class User implements Serializable {
         myBorrowed.add(rentedBook);
     }
 
-    public void removeBook(Book removedBook){
+    public void removeBook(Book removedBook) {
         myBorrowed.remove(removedBook);
     }
 
