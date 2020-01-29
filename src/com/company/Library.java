@@ -82,14 +82,15 @@ public class Library {
     }
 
     public Book borrowBook(String title, boolean Indefinitely) {
-        Book bookToBorrow = searchBookList(title, BookFields.TITLE);
+        Book referenceToBook = searchBookList(title, BookFields.TITLE);
 
-        if (bookToBorrow == null || !bookToBorrow.isAvailable()) {
+        if (referenceToBook == null || !referenceToBook.isAvailable()) {
             return null;
         }
-        Book rentedBook = bookToBorrow.borrowThisBook(loggedUser.getUserName(), 14, Indefinitely);
+
+        Book rentedBook = referenceToBook.borrowThisBook(loggedUser.getUserName(), 14, Indefinitely);
         loggedUser.addBook(rentedBook);
-        return bookToBorrow;
+        return referenceToBook;
     }
 
     public Book returnBorrowedBook(String title) {
@@ -144,7 +145,8 @@ public class Library {
 
                 for (Book exitingBook : user.getMyBorrowed()) {
                     System.out.println("Book: " + exitingBook.getTitle());
-                }  System.out.println("----------------------------");
+                }
+                System.out.println("----------------------------");
             }
         }
     }

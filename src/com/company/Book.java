@@ -107,7 +107,15 @@ public class Book implements Serializable {
         if (!this.isAvailable())
             return null;
 
-        Book newCopy = new Book(bookCategory, title, author, description, false, borrowedDate, null, maxBorrowingDays, withUserName);
-        return newCopy;
+
+        this.borrowedDate = new Date();
+        this.returnDate = null;
+        this.maxBorrowingDays = MaximumDays;
+        this.withUserName = withUserName;
+        this.indefinitely = indefinitely;
+        this.available = false;
+
+
+        return  new Book(this.bookCategory, this.title, this.author, this.description, this.available , this.borrowedDate, this.returnDate , this.maxBorrowingDays, this.withUserName);
     }
 }
